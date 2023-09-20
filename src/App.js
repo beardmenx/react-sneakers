@@ -19,9 +19,17 @@ function App() {
       .then((json) => setItems(json));
   }, []);
 
+  const onAddToCart = (obj) => {
+    setCartItems((prev) => [...prev, obj]);
+  };
+
+  console.log(cartItems);
+
   return (
     <div className="wrapper clear">
-      {cartOpened && <Drawer onClose={() => setCartOpened(false)} />}
+      {cartOpened && (
+        <Drawer items={cartItems} onClose={() => setCartOpened(false)} />
+      )}
       <Header onClickCart={() => setCartOpened(true)} />
       <div className="content p-40">
         <div className="d-flex align-center mb-40 justify-between">
@@ -33,13 +41,13 @@ function App() {
         </div>
 
         <div className="d-flex flex-wrap ">
-          {items.map((obj) => (
+          {items.map((item) => (
             <Card
-              title={obj.title}
-              price={obj.price}
-              imageUrl={obj.imageUrl}
+              title={item.title}
+              price={item.price}
+              imageUrl={item.imageUrl}
               onClickFavorite={() => console.log(`Вы добавили в закладки`)}
-              onPlus={() => console.log(`Вы добавили в корзину : ${obj.title}`)}
+              onPlus={(obj) => onAddToCart(obj)}
             />
           ))}
         </div>
